@@ -28,5 +28,5 @@ class BasemapLayer(dl.TileLayer):
         kwargs["url"] = basemap_tiles[name].url
         kwargs["id"] = basemap_tiles[name].id
         kwargs["attribution"] = basemap_tiles[name].attribution
-        kwargs["max_zoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
-        super().__init__(kwargs)
+        kwargs["maxZoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
+        super().__init__(**kwargs)
