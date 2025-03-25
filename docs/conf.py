@@ -12,7 +12,7 @@ from datetime import datetime
 project = "Dash Leaflet Basemaps"
 author = "Pierrick Rambaud"
 copyright = f"2024-{datetime.now().year}, {author}"
-release = "0.1.1"
+release = "0.1.2"
 
 # -- General configuration -----------------------------------------------------
 extensions = [
