@@ -3,7 +3,7 @@ from urllib.parse import parse_qsl, quote, urlencode, urlparse, urlunparse
 
 import dash_leaflet as dl
 
-from dash_leaflet_basemaps.basemaps import basemap_tiles
+from .basemaps import basemap_tiles
 
 __version__ = "0.1.2"
 __author__ = "Pierrick Rambaud"
