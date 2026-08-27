@@ -1,11 +1,25 @@
 """The init file of the package."""
+from urllib.parse import parse_qsl, quote, urlencode, urlparse, urlunparse
+
 import dash_leaflet as dl
 
-from .basemaps import basemap_tiles
+from dash_leaflet_basemaps.basemaps import basemap_tiles
 
 __version__ = "0.1.2"
 __author__ = "Pierrick Rambaud"
 __email__ = "pierrick.rambaud49@gmail.com"
+
+
+def _append_query_param(url: str, key: str, value: str) -> str:
+    """Return url with key=value added, preserving existing query and fragment.
+        
+    {placeholder} tokens used by Leaflet URL templates are left unescaped.
+    """
+    parts = urlparse(url)
+    params = parse_qsl(parts.query, keep_blank_values=True)
+    params.append((key, value))
+    new_query = urlencode(params, quote_via=quote, safe="{}")
+    return urlunparse(parts._replace(query=new_query))
 
 
 class BasemapLayer(dl.TileLayer):
@@ -17,6 +31,7 @@ class BasemapLayer(dl.TileLayer):
         Args:
             name: The name of the basemap.
             show_attribution: decide if the attribution of the newly added layer should be displayed in leaflet attributions. Must be done in agreement with the licence of each individual layer. Default is ``True``.
+            api_key: optional API key appended to the tile URL as a ``key`` query parameter. Existing query parameters and fragments are preserved and the value is percent-encoded.
             kwargs: any keyword arguments from dash-leaflet TileLayer class knowing that ``url``, ``id`` and ``attribution`` will be ignored.
         """
         # check if the name exists
@@ -26,7 +41,11 @@ class BasemapLayer(dl.TileLayer):
             )
 
         # get the basemap
-        kwargs["url"] = basemap_tiles[name].url + (f"?key={api_key}" if api_key is not None else "")
+        url = basemap_tiles[name].url
+        if api_key is not None:
+            url = _append_query_param(url, "key", api_key)
+        print("Url:", url)
+        kwargs["url"] = url
         kwargs["id"] = basemap_tiles[name].id
         kwargs["maxZoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
 
