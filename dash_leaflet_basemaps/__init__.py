@@ -13,7 +13,7 @@ __email__ = "pierrick.rambaud49@gmail.com"
 class BasemapLayer(dl.TileLayer):
     """A class to represent a basemap layer."""
 
-    def __init__(self, name: str, show_attribution: bool = True, api_key: str = None, **kwargs):
+    def __init__(self, name: str, show_attribution: bool = True, api_key: None |str = None, **kwargs):
         """Initialize the class.
 
         Args:
