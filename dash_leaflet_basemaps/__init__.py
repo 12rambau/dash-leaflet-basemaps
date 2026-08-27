@@ -10,18 +10,6 @@ __author__ = "Pierrick Rambaud"
 __email__ = "pierrick.rambaud49@gmail.com"
 
 
-def _append_query_param(url: str, key: str, value: str) -> str:
-    """Return url with key=value added, preserving existing query and fragment.
-        
-    {placeholder} tokens used by Leaflet URL templates are left unescaped.
-    """
-    parts = urlparse(url)
-    params = parse_qsl(parts.query, keep_blank_values=True)
-    params.append((key, value))
-    new_query = urlencode(params, quote_via=quote, safe="{}")
-    return urlunparse(parts._replace(query=new_query))
-
-
 class BasemapLayer(dl.TileLayer):
     """A class to represent a basemap layer."""
 
@@ -40,10 +28,15 @@ class BasemapLayer(dl.TileLayer):
                 f"Basemap {name} not found. Available basemaps are: [{', '.join(basemap_tiles.keys())}"
             )
 
-        # get the basemap
         url = basemap_tiles[name].url
         if api_key is not None:
-            url = _append_query_param(url, "key", api_key)
+            # append the api_key to the url as a query parameter
+            parts = urlparse(url)
+            params = parse_qsl(parts.query, keep_blank_values=True)
+            params.append(("key", api_key))
+            new_query = urlencode(params, quote_via=quote, safe="{}")
+            url = urlunparse(parts._replace(query=new_query))
+
         kwargs["url"] = url
         kwargs["id"] = basemap_tiles[name].id
         kwargs["maxZoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
