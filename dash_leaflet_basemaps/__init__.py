@@ -44,7 +44,6 @@ class BasemapLayer(dl.TileLayer):
         url = basemap_tiles[name].url
         if api_key is not None:
             url = _append_query_param(url, "key", api_key)
-        print("Url:", url)
         kwargs["url"] = url
         kwargs["id"] = basemap_tiles[name].id
         kwargs["maxZoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
