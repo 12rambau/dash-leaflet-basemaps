@@ -11,7 +11,7 @@ __email__ = "pierrick.rambaud49@gmail.com"
 class BasemapLayer(dl.TileLayer):
     """A class to represent a basemap layer."""
 
-    def __init__(self, name: str, show_attribution: bool = True, **kwargs):
+    def __init__(self, name: str, show_attribution: bool = True, api_key: str = None, **kwargs):
         """Initialize the class.
 
         Args:
@@ -26,7 +26,7 @@ class BasemapLayer(dl.TileLayer):
             )
 
         # get the basemap
-        kwargs["url"] = basemap_tiles[name].url
+        kwargs["url"] = basemap_tiles[name].url + (f"?key={api_key}" if api_key is not None else "")
         kwargs["id"] = basemap_tiles[name].id
         kwargs["maxZoom"] = kwargs.get("maxZoom", basemap_tiles[name].max_zoom)
 
