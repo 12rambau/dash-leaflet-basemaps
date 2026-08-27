@@ -5,7 +5,7 @@ import dash_leaflet as dl
 
 from .basemaps import basemap_tiles
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 __author__ = "Pierrick Rambaud"
 __email__ = "pierrick.rambaud49@gmail.com"
 
